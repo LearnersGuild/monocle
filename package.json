@@ -5,10 +5,16 @@
   "main": "index.js",
   "dependencies": {
     "dotenv": "^4.0.0",
+    "express": "^4.15.2",
+    "pug": "^2.0.0-beta.12",
     "rethinkdbdash": "^2.3.28"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "nodemon": "^1.11.0"
+  },
   "scripts": {
+    "start": "node webServer",
+    "start:dev": "nodemon webServer",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

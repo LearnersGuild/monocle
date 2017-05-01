@@ -1,0 +1,23 @@
+extends layout.pug
+
+block content
+  h1 Projects
+
+  table
+    thead
+      tr
+        th Name
+        th Players
+        th Goal Number
+        th Artifact URL
+    tbody
+      for project in projects
+        tr
+          td
+            a(href="https://game.learnersguild.org/projects/"+project.name)= project.name
+          td
+            for player in project.players
+              a(href="")= player.handle
+              |  &nbsp;
+          td
+            a(href=project.artifactURL)= project.artifactURL
