@@ -1,7 +1,10 @@
-const r = require('./rethinkdb')
+const game = require('./game')
 
-r
-  .table('projects')
+// const r = require('./rethinkdb')
+// r
+//   .table('projects')
+//   .filter({active: true})
+game.getCycleId(13)
   .then(
     users => {
       console.log('users', users)
