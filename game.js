@@ -1,15 +1,18 @@
-const r = require('./rethinkdb')
+const r = require('./rethinkdb')({
+  url: process.env.GAME_RETHINKDB_URL,
+  cert: process.env.GAME_RETHINKDB_CERT,
+})
 
-const game = () => r.db('game_development')
+const game = {}
 
 game.getOaklandChapterId = () =>
-  game()
+  r
     .table('chapters')
     .filter({'channelName': 'oakland'})
     .nth(0)('id')
 
-game.getCycles = () =>
-  game()
+game.cycles = () =>
+  r
     .table('cycles')
     .filter({
       chapterId: game.getOaklandChapterId()
@@ -17,10 +20,26 @@ game.getCycles = () =>
     .pluck('id', 'cycleNumber')
     .orderBy('cycleNumber')
 
-game.getCycleId = cycleNumber =>
-  game.getCycles()
+game.cycleNumberToCycleId = cycleNumber =>
+  game.cycles()
     .filter({cycleNumber})
-    .nth(0)
+    .nth(0)('id')
+
+game.latestCycleNumber = () =>
+  game.cycles()
+    .nth(-1)('cycleNumber')
+
+game.projects = () =>
+  r.table('projects')
+
+game.projectsForCycle = cycleNumber =>
+  game.projects()
+    .filter({
+      cycleId: game.cycleNumberToCycleId(cycleNumber)
+    })
+
+game.projectsForLatestCycle = () =>
+  game.projectsForCycle(game.latestCycleNumber())
 
 
 module.exports = game

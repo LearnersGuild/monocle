@@ -1,13 +1,17 @@
+const idm = require('./idm')
 const game = require('./game')
 
 // const r = require('./rethinkdb')
 // r
 //   .table('projects')
 //   .filter({active: true})
-game.getCycleId(13)
+
+// game.getCycleId(13)
+
+game.projectsForLatestCycle()
   .then(
-    users => {
-      console.log('users', users)
+    results => {
+      console.log('results', results)
       process.exit()
     },
     error => {
