@@ -9,34 +9,60 @@ routes.get('/', (request, response, next) => {
 })
 
 
-routes.get('/projects', (request, response, next) => {
-  projectsTable()
+routes.get('/cycles', (request, response, next) => {
+  game.cycles()
+    .then(cycles => {
+      response.render('cycles/index', {cycles})
+    })
+    .catch(next)
+})
+
+routes.get('/cycles/latest', (request, response, next) => {
+  game.latestCycleNumber()
+    .then(latestCycleNumber => {
+      response.redirect(`/cycles/${latestCycleNumber}`)
+    })
+    .catch(next)
+})
+
+routes.use('/cycles/:cycleNumber', (request, response, next) => {
+  request.cycleNumber = Number(request.params.cycleNumber)
+  next()
+})
+
+routes.get('/cycles/:cycleNumber', (request, response, next) => {
+  response.render('cycles/show', {
+    title: 'Projects',
+    cycleNumber: request.cycleNumber,
+  })
+})
+
+routes.get('/cycles/:cycleNumber/projects', (request, response, next) => {
+  projectsTable(request.cycleNumber)
     .then( projects => {
-      response.render('projects', {
+      response.render('cycles/projects/index', {
         title: 'Projects',
+        cycleNumber: request.cycleNumber,
         projects,
       })
     })
     .catch(next)
 })
 
+const usersById = () =>
+  idm.users().then(users => {
+    const usersById = {}
+    users.forEach(user => { usersById[user.id] = user })
+    return usersById
+  })
 
-const projectsTable = function(){
+const projectsTable = function(cycleNumber){
   return Promise.all([
-    idm.users(),
-    game.projectsForLatestCycle(),
+    usersById(),
+    game.projectsForCycle(cycleNumber),
   ])
     .then(([users, projects]) => {
-      const usersById = {}
-      users.forEach(user => { usersById[user.id] = user })
-      console.log(users.length)
-      console.log(...users.map(u => u.handle))
-
-      // projects.map(p => p.playerIds).flatten()
-
-      // console.log(users)
       return projects.map(project => {
-        // console.log(project.playerIds)
         const row = {
           name: project.name,
           goalNumber: project.goal.number,
@@ -44,7 +70,7 @@ const projectsTable = function(){
           artifactURL: project.artifactURL,
         }
         row.players = project.playerIds.map(playerId =>
-          usersById[playerId] || playerId
+          users[playerId] || playerId
         )
         console.log(row)
         return row

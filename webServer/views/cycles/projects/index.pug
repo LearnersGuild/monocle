@@ -1,7 +1,7 @@
-extends layout.pug
+extends ../../layout.pug
 
 block content
-  h1 Projects
+  h1 Projects for Cycle #{cycleNumber}
 
   table
     thead
@@ -19,5 +19,7 @@ block content
             for player in project.players
               a(href="")= player.handle
               |  &nbsp;
+          td
+            a(href="https://jsdev.learnersguild.org/goals/"+project.goalNumber)= project.goalNumber
           td
             a(href=project.artifactURL)= project.artifactURL

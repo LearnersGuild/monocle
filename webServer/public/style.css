@@ -1,0 +1,27 @@
+html, body {
+  padding: 0;
+  margin: 0;
+  width: 100vw;
+  height: 100vh;
+}
+
+
+body > nav {
+  background: black;
+  padding: 0.25em 0.5em;
+  color: white;
+}
+
+body > nav a {
+  color: white;
+  text-decoration: none;
+}
+
+body > nav a:after {
+  content: " | ";
+}
+
+
+body > main {
+  padding: 1em;
+}

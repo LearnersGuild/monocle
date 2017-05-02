@@ -1,7 +1,16 @@
 html
   head
-    title #{title} - Game Dashboard
+    title
+      block title
+      | Game Dashboard
+    link(rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/6.0.0/normalize.min.css")
+    link(rel="stylesheet" type="text/css" href="/style.css")
     block scripts
   body
-    block content
+    nav
+      a(href="/") Home
+      a(href="/cycles") Cycles
+      a(href="/cycles/latest") Latest Cycle
+    main
+      block content
 

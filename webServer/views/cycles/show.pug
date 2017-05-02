@@ -1,0 +1,15 @@
+extends ../layout.pug
+
+block title
+  | Cycle #{cycleNumber}
+
+block content
+  h1 Cycle #{cycleNumber}
+
+
+  div
+    a(href="/cycles/"+cycleNumber+"/projects") Projects
+  div
+    a(href="/cycles/"+cycleNumber+"/players") Players
+  div
+    a(href="/cycles/"+cycleNumber+"/retros") Retros
