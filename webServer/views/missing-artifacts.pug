@@ -1,0 +1,19 @@
+extends layout.pug
+
+block content
+  h1 Missing Artifacts
+
+  table
+    thead
+      tr
+        th Cycle
+        th Name
+        th
+    tbody
+      for project in projects
+        tr
+          td
+            a(href="/cycles/"+project.cycleNumber)= project.cycleNumber
+          td
+            a(href="https://game.learnersguild.org/projects/"+project.name)= project.name
+

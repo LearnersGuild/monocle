@@ -1,14 +1,17 @@
 extends ../../layout.pug
 
+
 block content
   h1 Projects for Cycle #{cycleNumber}
 
-  table
+  a(href="/cycles/"+cycleNumber+"/projects.csv") Download CSV
+
+  table.projects-table
     thead
       tr
         th Name
         th Players
-        th Goal Number
+        th(colspan=2) Goal
         th Artifact URL
     tbody
       for project in projects
@@ -21,5 +24,7 @@ block content
               |  &nbsp;
           td
             a(href="https://jsdev.learnersguild.org/goals/"+project.goalNumber)= project.goalNumber
+          td
+            a(href="https://jsdev.learnersguild.org/goals/"+project.goalNumber)= project.goalTitle
           td
             a(href=project.artifactURL)= project.artifactURL

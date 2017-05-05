@@ -1,3 +1,4 @@
+const csvStringify = require('csv-stringify')
 const express = require('express')
 const routes = new express.Router
 
@@ -7,6 +8,15 @@ const idm = require('../../idm')
 routes.get('/', (request, response, next) => {
   response.render('index', {title: 'Home'})
 })
+
+routes.get('/missing-artifacts', (request, response, next) => {
+  game.projectsMissingArtifacts()
+    .then(projects => {
+      response.render('missing-artifacts', {projects})
+    })
+    .catch(next)
+})
+
 
 
 routes.get('/cycles', (request, response, next) => {
@@ -49,6 +59,41 @@ routes.get('/cycles/:cycleNumber/projects', (request, response, next) => {
     .catch(next)
 })
 
+routes.get('/cycles/:cycleNumber/projects.csv', (request, response, next) => {
+  projectsTable(request.cycleNumber)
+    .then( projects => {
+      const headers = [
+        'Project Name',
+        'Goal Title',
+        'Goal Number',
+        'Goal URL',
+        'Players',
+        'Artifact URL',
+        'Coach',
+      ]
+      const data = [headers]
+      projects.forEach(project => {
+        data.push([
+          project.name,
+          project.goalTitle,
+          project.goalNumber,
+          project.goalURL,
+          project.players.map(p => p.handle).join(', '),
+          project.artifactURL,
+          project.coachHandle
+        ])
+      })
+      csvStringify(data, (error, csv) => {
+        if (error) {
+          response.status(500).send(`Error: ${error.message}`)
+        }
+        response.set('Content-Type', 'application/octet-stream');
+        response.send(csv);
+      })
+    })
+    .catch(next)
+})
+
 const usersById = () =>
   idm.users().then(users => {
     const usersById = {}
@@ -63,11 +108,15 @@ const projectsTable = function(cycleNumber){
   ])
     .then(([users, projects]) => {
       return projects.map(project => {
+        console.log(project)
         const row = {
           name: project.name,
+          goalTitle: project.goal.title,
           goalNumber: project.goal.number,
           goalLevel: project.goal.level,
           artifactURL: project.artifactURL,
+          coachHandle: users[project.coachId].handle,
+          goalURL: `https://jsdev.learnersguild.org/goals/#{project.goal.number}`,
         }
         row.players = project.playerIds.map(playerId =>
           users[playerId] || playerId

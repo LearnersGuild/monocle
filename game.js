@@ -20,6 +20,17 @@ game.cycles = () =>
     .pluck('id', 'cycleNumber')
     .orderBy('cycleNumber')
 
+game.cyclesMap = () =>
+  game.cycles()
+    .then(cycles => {
+      const map = {}
+      cycles.forEach(cycle => {
+        map[cycle.id] = cycle.cycleNumber
+        map[cycle.cycleNumber] = cycle.id
+      })
+      return map
+    })
+
 game.cycleNumberToCycleId = cycleNumber =>
   game.cycles()
     .filter({cycleNumber})
@@ -41,6 +52,23 @@ game.projectsForCycle = cycleNumber =>
 game.projectsForLatestCycle = () =>
   game.projectsForCycle(game.latestCycleNumber())
 
+game.projectsMissingArtifacts = () =>
+  Promise.all([
+    game.cyclesMap(),
+    game.projects()
+      .filter(
+        r.row.hasFields('artifactURL').not()
+      )
+  ])
+    .then(([cycles, projects]) => {
+      console.log(cycles)
+      projects.forEach(project => {
+        project.cycleNumber = cycles[project.cycleId]
+      })
+      return projects.filter(project =>
+        project.cycleNumber >= 35
+      ).sort((a,b) => b.cycleNumber - a.cycleNumber)
+    })
 
 
 module.exports = game
