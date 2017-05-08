@@ -9,10 +9,11 @@ block content
   table.projects-table
     thead
       tr
-        th Name
+        th Project Name
         th Players
         th(colspan=2) Goal
         th Artifact URL
+        th Coach
     tbody
       for project in projects
         tr
@@ -28,3 +29,6 @@ block content
             a(href="https://jsdev.learnersguild.org/goals/"+project.goalNumber)= project.goalTitle
           td
             a(href=project.artifactURL)= project.artifactURL
+          td
+            if project.coachHandle
+              a(href="https://game.learnersguild.org/users/"+project.coachHandle)= project.coachHandle

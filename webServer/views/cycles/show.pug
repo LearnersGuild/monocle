@@ -5,7 +5,9 @@ block title
 
 block content
   h1 Cycle #{cycleNumber}
-
+  a(href="/cycles/"+(cycleNumber-1))= '<-'
+  =' '
+  a(href="/cycles/"+(cycleNumber+1))= '->'
 
   div
     a(href="/cycles/"+cycleNumber+"/projects") Projects

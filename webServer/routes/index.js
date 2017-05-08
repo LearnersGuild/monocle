@@ -80,7 +80,7 @@ routes.get('/cycles/:cycleNumber/projects.csv', (request, response, next) => {
           project.goalURL,
           project.players.map(p => p.handle).join(', '),
           project.artifactURL,
-          project.coachHandle
+          project.coachHandle,
         ])
       })
       csvStringify(data, (error, csv) => {
@@ -109,14 +109,15 @@ const projectsTable = function(cycleNumber){
     .then(([users, projects]) => {
       return projects.map(project => {
         console.log(project)
+        const coach = users[project.coachId] || {}
         const row = {
           name: project.name,
           goalTitle: project.goal.title,
           goalNumber: project.goal.number,
           goalLevel: project.goal.level,
           artifactURL: project.artifactURL,
-          coachHandle: users[project.coachId].handle,
-          goalURL: `https://jsdev.learnersguild.org/goals/#{project.goal.number}`,
+          coachHandle: coach.handle,
+          goalURL: `https://jsdev.learnersguild.org/goals/${project.goal.number}`,
         }
         row.players = project.playerIds.map(playerId =>
           users[playerId] || playerId
