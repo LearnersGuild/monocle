@@ -27,7 +27,7 @@ routes.get('/cycles', (request, response, next) => {
     .catch(next)
 })
 
-routes.get('/cycles/latest', (request, response, next) => {
+routes.get('/cycles/current', (request, response, next) => {
   game.latestCycleNumber()
     .then(latestCycleNumber => {
       response.redirect(`/cycles/${latestCycleNumber}`)
