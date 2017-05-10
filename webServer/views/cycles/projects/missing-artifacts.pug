@@ -1,0 +1,21 @@
+extends ../../layout.pug
+
+block title
+  | Projects with missing artifacts - cycle #{cycleNumber}
+
+block content
+  h1 Missing artifacts for cycle #{cycleNumber}
+
+  h2 Projects
+
+  ul
+    for project in projects
+      li
+        a(href="https://game.learnersguild.org/projects/"+project.name target="_blank")= project.name
+
+  h2 Players
+
+  ul
+    for player in players
+      li
+        a(href="https://game.learnersguild.org/users/"+player.handle target="_blank")= player.handle

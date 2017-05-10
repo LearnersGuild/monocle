@@ -94,6 +94,28 @@ routes.get('/cycles/:cycleNumber/projects.csv', (request, response, next) => {
     .catch(next)
 })
 
+routes.get('/cycles/:cycleNumber/missing-artifacts', (request, response, next) => {
+  projectsTable(request.cycleNumber)
+    .then( projects => {
+      projects = projects.filter(project => !project.artifactURL)
+
+      const players = []
+      projects.forEach(project => {
+        project.players.forEach(player => {
+          players.push(player)
+        })
+      })
+
+      response.render('cycles/projects/missing-artifacts', {
+        title: 'Projects With Missing Artifacts',
+        cycleNumber: request.cycleNumber,
+        projects,
+        players,
+      })
+    })
+    .catch(next)
+})
+
 const usersById = () =>
   idm.users().then(users => {
     const usersById = {}
