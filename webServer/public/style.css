@@ -19,6 +19,7 @@ body > nav a {
 
 body > nav a:after {
   content: " | ";
+  opacity: 0.5;
 }
 
 

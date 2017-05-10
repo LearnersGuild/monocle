@@ -10,7 +10,10 @@ html
     nav
       a(href="/") Home
       a(href="/cycles") Cycles
+      a.prev-cycle-link(href="")= '◀'
       a(href="/cycles/current") Current Cycle
+      a.next-cycle-link(href="")= '▶'
     main
       block content
 
+    script(type="text/javascript" src="/script.js")
