@@ -130,7 +130,6 @@ const projectsTable = function(cycleNumber){
   ])
     .then(([users, projects]) => {
       return projects.map(project => {
-        console.log(project)
         const coach = users[project.coachId] || {}
         const row = {
           name: project.name,
@@ -144,7 +143,6 @@ const projectsTable = function(cycleNumber){
         row.players = project.playerIds.map(playerId =>
           users[playerId] || playerId
         )
-        console.log(row)
         return row
       })
     })
