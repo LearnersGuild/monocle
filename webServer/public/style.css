@@ -5,6 +5,9 @@ html, body {
   height: 100vh;
 }
 
+a[href] {
+  text-decoration: none;
+}
 
 body > nav {
   background: black;
@@ -14,7 +17,6 @@ body > nav {
 
 body > nav a {
   color: white;
-  text-decoration: none;
 }
 
 body > nav a:after {
@@ -24,10 +26,29 @@ body > nav a:after {
 
 
 body > main {
+  overflow: hidden;
   padding: 1em;
+  overflow: auto;
 }
 
 
 .projects-table {
+  table-layout: fixed;
+  border-collapse: collapse;
+  empty-cells: show;
+  /*border-right: 1em solid white; */
+}
 
+.projects-table th {
+  padding: 0.5em;
+}
+
+.projects-table td {
+  white-space: nowrap;
+  border: 1px solid #e6e6e6;
+  padding: 0.25em;
+}
+
+.projects-table tbody tr:hover {
+  background-color: #e6e6e6;
 }

@@ -35,6 +35,9 @@ routes.get('/:cycleNumber', (request, response, next) => {
 routes.get('/:cycleNumber/projects', (request, response, next) => {
   projectsTable(request.cycleNumber)
     .then( projects => {
+      projects.sort((a,b) =>
+        a.goalNumber - b.goalNumber
+      )
       response.render('cycles/projects/index', {
         title: 'Projects',
         cycleNumber: request.cycleNumber,
