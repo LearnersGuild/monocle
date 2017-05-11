@@ -41,6 +41,7 @@ body > main {
 
 .table th {
   padding: 0.5em;
+  white-space: nowrap;
 }
 
 .table td {

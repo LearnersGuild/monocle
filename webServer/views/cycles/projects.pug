@@ -14,6 +14,7 @@ block content
         th(colspan=2) Goal
         th Artifact URL
         th Coach
+        th Goal Level
     tbody
       for project in projects
         tr
@@ -32,3 +33,5 @@ block content
           td
             if project.coachHandle
               a(href="https://game.learnersguild.org/users/"+project.coachHandle)= project.coachHandle
+          td
+            =project.goalLevel
