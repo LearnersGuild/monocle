@@ -1,8 +1,8 @@
 const express = require('express')
-const routes = new express.Router
 const game = require('../../game')
 const idm = require('../../idm')
 
+const routes = module.exports = new express.Router
 
 routes.get('', (request, response, next) => {
   game.cycles()
@@ -38,7 +38,7 @@ routes.get('/:cycleNumber/projects', (request, response, next) => {
       projects.sort((a,b) =>
         a.goalNumber - b.goalNumber
       )
-      response.render('cycles/projects/index', {
+      response.render('cycles/projects', {
         title: 'Projects',
         cycleNumber: request.cycleNumber,
         projects,
@@ -82,6 +82,19 @@ routes.get('/:cycleNumber/projects.csv', (request, response, next) => {
     .catch(next)
 })
 
+routes.get('/:cycleNumber/players', (request, response, next) => {
+  playersTable(request.cycleNumber)
+    .then( players => {
+      response.render('cycles/players', {
+        title: 'Projects',
+        cycleNumber: request.cycleNumber,
+        players,
+        huh: require('util').inspect(players),
+      })
+    })
+    .catch(next)
+})
+
 routes.get('/:cycleNumber/missing-artifacts', (request, response, next) => {
   projectsTable(request.cycleNumber)
     .then( projects => {
@@ -94,7 +107,7 @@ routes.get('/:cycleNumber/missing-artifacts', (request, response, next) => {
         })
       })
 
-      response.render('cycles/projects/missing-artifacts', {
+      response.render('cycles/missing-artifacts', {
         title: 'Projects With Missing Artifacts',
         cycleNumber: request.cycleNumber,
         projects,
@@ -136,4 +149,16 @@ const projectsTable = function(cycleNumber){
     })
 }
 
-module.exports = routes
+const playersTable = function(cycleNumber){
+  return projectsTable(cycleNumber)
+    .then((projects) => {
+      const players = []
+      projects.forEach(project => {
+        project.players.forEach(player => {
+          player.project = project
+          players.push(player)
+        })
+      })
+      return players
+    })
+}

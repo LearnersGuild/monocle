@@ -1,0 +1,13 @@
+extends layout.pug
+
+block title
+  | Players
+
+block content
+  h1 Players
+
+  ul
+    for player in players
+      li
+        = player.handle
+        //- pre= JSON.stringify(player, null, 4)

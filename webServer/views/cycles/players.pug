@@ -1,0 +1,22 @@
+extends ../layout.pug
+
+
+block content
+  h1 Projects for Cycle #{cycleNumber}
+
+  a(href="/cycles/"+cycleNumber+"/projects.csv") Download CSV
+
+  table.table.players-table
+    thead
+      tr
+        th Player Name
+        th Handle
+    tbody
+      for player in players
+        tr
+          td
+            = player.name
+          td
+            = player.handle
+
+  pre= huh

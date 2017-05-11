@@ -71,4 +71,7 @@ game.projectsMissingArtifacts = () =>
     })
 
 
+game.players = () =>
+  r.table('players')
+
 module.exports = game

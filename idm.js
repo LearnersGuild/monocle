@@ -8,7 +8,6 @@ const idm = {}
 idm.users = () =>
   r
     .table('users')
-    .limit(999999999)
     .pluck(
       'active',
       'email',
@@ -20,5 +19,9 @@ idm.users = () =>
       'createdAt',
       'updatedAt'
     )
+
+idm.activeUsers = () =>
+  idm.users()
+    .filter({active: true})
 
 module.exports = idm

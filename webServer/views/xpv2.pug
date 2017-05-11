@@ -1,0 +1,58 @@
+extends layout.pug
+
+block title
+  | Players
+
+block content
+  h1 Players
+
+  style(type='text/css').
+    tr[data-level-delta="?"]{
+      background-color: orange;
+    }
+    tr[data-level-delta="-4"]{
+      background-color: #ff0000;
+    }
+    tr[data-level-delta="-3"]{
+      background-color: #ff3333;
+    }
+    tr[data-level-delta="-2"]{
+      background-color: #ff6666;
+    }
+    tr[data-level-delta="-1"]{
+      background-color: #ff9999;
+    }
+    tr[data-level-delta="0"]{
+      background-color: #ccffff;
+    }
+    tr[data-level-delta="1"]{
+      background-color: #99ff99;
+    }
+    tr[data-level-delta="2"]{
+      background-color: #66ff66;
+    }
+    tr[data-level-delta="3"]{
+      background-color: #33ff33;
+    }
+    tr[data-level-delta="4"]{
+      background-color: #00ff00;
+    }
+
+  a(href="/xpv2/csv") Download as CSV
+
+  table.xpv2.table
+    thead
+      tr
+        th Player
+        th XPV1 Level
+        th XPV2 Level
+        th Level Delta
+    tbody
+
+      for player in players
+        tr(data-level-delta=player.levelDelta)
+          td
+            a(href="https://game.learnersguild.org/users/"+player.handle target="_blank")= player.handle
+          td= player.level
+          td= player.levelV2
+          td= player.levelDelta
