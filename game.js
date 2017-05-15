@@ -1,3 +1,5 @@
+const moment = require('moment')
+const idm = require('./idm')
 const r = require('./rethinkdb')({
   url: process.env.GAME_RETHINKDB_URL,
   cert: process.env.GAME_RETHINKDB_CERT,
@@ -71,6 +73,17 @@ game.projectsMissingArtifacts = () =>
 
 
 game.players = () =>
-  r.table('players')
+  Promise.all([
+    r.table('players'),
+    idm.users(),
+  ])
+  .then(([players, users]) => {
+    players.forEach(player => {
+      const user = users.find(user => user.id === player.id)
+      if (user) Object.assign(player, user)
+    })
+    return players
+  })
+
 
 module.exports = game
