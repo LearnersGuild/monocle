@@ -1,0 +1,27 @@
+extends ../layout.pug
+
+block title
+  | Goal Usage
+
+block content
+  h1 Goal Usage
+
+  table
+    thead
+      tr
+        th Number of players
+        th Goal
+        th Players
+    tbody
+      for goal in goalUsage
+        tr
+          td= goal.numberOfPlayers
+          td
+            a(href="https://jsdev.learnersguild.org/goals/"+goal.number)
+              = goal.number
+              | -
+              = goal.title
+          td
+            // = goal.playerHandles.join(', ')
+
+  //- pre=JSON.stringify(goalUsage, null, 2)

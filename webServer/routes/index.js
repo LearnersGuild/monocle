@@ -26,5 +26,6 @@ routes.get('/missing-artifacts', (request, response, next) => {
 routes.use('/cycles', require('./cycles'))
 routes.use('/xpv2', require('./xpv2'))
 routes.use('/projects', require('./projects'))
+routes.use('/goals', require('./goals'))
 
 module.exports = routes
