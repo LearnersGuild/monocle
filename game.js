@@ -86,4 +86,75 @@ game.players = () =>
   })
 
 
+game.goals = () =>
+  game.projects()
+    // .limit(100)
+    .then(projects => {
+
+      const goals = {}
+      projects.forEach(project => {
+        const goal = project.goal
+        delete project.goal
+        if (!(goal.number in goals)){
+          goals[goal.number] = {
+            number: goal.number,
+            title: goal.title,
+            url: goal.url,
+            projects: [],
+          }
+        }
+        goals[goal.number].projects.push({
+          cycleId: project.cycleId,
+          playerIds: project.playerIds,
+          name: project.name,
+          createdAt: project.createdAt,
+        })
+      })
+
+      Object.keys(goals).forEach(goalNumber => {
+        const goal = goals[goalNumber]
+        goal.playerIds = []
+        goal.projects.forEach(project => {
+          project.playerIds.forEach(playerId => {
+            goal.playerIds.includes(playerId) ||
+              goal.playerIds.push(playerId)
+          })
+        })
+        delete goal.projects
+      })
+
+      return Object.keys(goals).map(number => goals[number])
+    })
+
+game.goalUsage = () =>
+  Promise.all([
+    game.players(),
+    game.goals(),
+  ])
+    .then(([players, goals]) => {
+
+      // remove pre-september cohort players
+      players = players.filter(player =>
+        // moment(player.createdAt).isAfter('2016-09-01')
+        moment(player.createdAt).isAfter(moment().subtract(21, 'weeks'))
+      )
+
+      const playerIds = players.map(player => player.id)
+
+      // remove all playerIDs for players before september cohort
+      goals.forEach(goal => {
+        goal.playerIds = goal.playerIds.filter(playerId => playerIds.includes(playerId))
+        goal.playerHandles = goal.playerIds.map(playerId =>
+          players.find(player => player.id === playerId).handle
+        ).sort()
+        goal.numberOfPlayers = goal.playerIds.length
+      })
+
+      goals = goals.filter(goal => goal.numberOfPlayers > 0)
+
+      goals = goals.sort((a,b) => b.numberOfPlayers - a.numberOfPlayers)
+
+      return goals
+    })
+
 module.exports = game
