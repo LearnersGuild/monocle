@@ -61,7 +61,6 @@ game.projectsMissingArtifacts = () =>
       )
   ])
     .then(([cycles, projects]) => {
-      console.log(cycles)
       projects.forEach(project => {
         project.cycleNumber = cycles[project.cycleId]
       })
