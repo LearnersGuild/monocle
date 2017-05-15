@@ -6,8 +6,18 @@ block title
 block content
   h1 Players
 
-  ul
-    for player in players
-      li
-        = player.handle
-        //- pre= JSON.stringify(player, null, 4)
+  table
+    thead
+      tr
+        th handle
+        th start date
+        th start month
+        th after September cohort?
+    tbody
+      for player in players
+        tr
+          td= player.handle
+          td= player.createdAt
+          td= moment(player.createdAt).format('MMMM YYYY')
+          td= moment(player.createdAt).isAfter('2016-09-01')
+          //- td pre= JSON.stringify(player, null, 4)
