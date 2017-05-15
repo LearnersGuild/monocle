@@ -71,6 +71,20 @@ game.projectsMissingArtifacts = () =>
     })
 
 
+game.projectsByGoalNumber = (goalNumber, projects) => {
+  if (projects) {
+    return Promise.resolve(
+      projects.filter(
+        project => project.goal.number === goalNumber)
+    )
+  }
+  return game.projects()
+    .then(projects =>
+          projects.filter(
+            project => project.goal.number === goalNumber)
+         )
+}
+
 game.players = () =>
   r.table('players')
 

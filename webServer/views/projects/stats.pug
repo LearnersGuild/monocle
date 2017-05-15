@@ -1,0 +1,21 @@
+extends ../layout.pug
+
+block title
+  | Project Stats
+
+block content
+  h1
+    a(href=goal.url)= goal.title
+
+  h3 Goal Data:
+  div Base XP: #{goal.baseXp}
+  div Bonus XP: #{goal.bonusXp}
+  div Total Projects: #{totalCount}
+  div Total Projects with Completion Scores: #{validCount}
+
+  h3 Project Completion Stats:
+  div Average: #{stats.average}%
+  div Median: #{stats.median}%
+  div 75th Percentile: #{stats.p75}%
+  div Min: #{stats.min}
+  div Max: #{stats.max}
