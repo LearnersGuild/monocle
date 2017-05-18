@@ -1,0 +1,50 @@
+extends ../layout.pug
+
+block content
+  h1 Goal Completion Stats
+
+  a(href="/projects/stats/csv") Download CSV
+
+  table.table.stats-table
+    thead
+      tr
+        th Goal Name
+        th Goal #
+        th Team Size
+        th Base XP
+        th Bonus XP
+        th Level
+        th # Completed
+        th Average %
+        th Median %
+        th 75th Percentile
+        th Min %
+        th Max %
+      tbody
+        for stat in stats
+          tr
+            td
+              a(href="https://jsdev.learnersguild.org/goals/"+stat.goal.number)= stat.goal.title
+            td
+              =stat.goal.number
+            td
+              =stat.goal.teamSize
+            td
+              =stat.goal.baseXp
+            td
+              =stat.goal.bonusXp
+            td
+              =stat.goal.level
+            td
+              =stat.numberOfCompletedProjects
+            td
+              =stat.average
+            td
+              =stat.median
+            td
+              =stat.p75
+            td
+              =stat.min
+            td
+              =stat.max
+

@@ -8,6 +8,10 @@ var csv = require('csv')
 
 let allProjects;
 
+routes.get('/', (request, response) => {
+  response.render('projects/index');
+})
+
 routes.get('/:goalNumber/stats', (request, response) => {
   const goalNumber = parseInt(request.params.goalNumber)
   game.projectsByGoalNumber(goalNumber, allProjects)
@@ -21,7 +25,13 @@ routes.get('/:goalNumber/stats', (request, response) => {
     })
 })
 
-routes.get('/stats/csv', (request, response) => {
+routes.get('/stats/completion', (request, response) => {
+  let goalStats = Object.values(computeAllGoalsStats(allProjects))
+  goalStats = goalStats.sort( (a,b) => parseFloat(a.median) - parseFloat(b.median))
+  response.render('projects/all-stats', {stats: goalStats})
+})
+
+routes.get('/stats/completion/csv', (request, response) => {
   let allGoalStats = computeAllGoalsStats(allProjects)
   let header = ["Goal Name", "Goal #", "Team Size", "Base XP",
                 "Bonus XP", "Level", "# Completed", "Average",
