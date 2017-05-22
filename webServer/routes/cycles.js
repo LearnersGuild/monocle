@@ -90,7 +90,38 @@ routes.get('/:cycleNumber/players', (request, response, next) => {
         title: 'Projects',
         cycleNumber: request.cycleNumber,
         players,
-        huh: require('util').inspect(players),
+      })
+    })
+    .catch(next)
+})
+
+routes.get('/:cycleNumber/goals', (request, response, next) => {
+  game.projectsForCycle(request.cycleNumber)
+    .then(projects => {
+      let goals = {}
+      projects.forEach(project => {
+        const goalNumber = project.goal.number
+        const goal = (goals[goalNumber]) || (goals[goalNumber] = project.goal)
+        goal.projects = goal.projects || []
+        goal.projects.push(project)
+      })
+
+      goals = Object.keys(goals).map(goalNumber => goals[goalNumber])
+
+      goals.forEach(goal => {
+        goal.playerIds = []
+        goal.projects.forEach(project => {
+          project.playerIds.forEach(playerId => {
+            goal.playerIds.includes(playerId) || goal.playerIds.push(playerId)
+          })
+        })
+        goal.numberOfPlayers = goal.playerIds.length
+      })
+      return goals.sort((a,b) => b.numberOfPlayers - a.numberOfPlayers)
+    })
+    .then(goals => {
+      response.render('cycles/goals', {
+        goals,
       })
     })
     .catch(next)

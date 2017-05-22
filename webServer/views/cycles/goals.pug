@@ -1,0 +1,26 @@
+extends ../layout.pug
+
+block title
+  | Goals for Cycle #{cycleNumber}
+
+
+block content
+  h1 Goals for Cycle #{cycleNumber}
+
+  a(href="/cycles/"+cycleNumber+"/projects.csv") Download CSV
+
+  table
+    thead
+      tr
+        th Goal Number
+        th Goal Title
+        th Number of Players
+    tbody
+      for goal in goals
+        tr
+          td
+            = goal.number
+          td
+            a(href="https://jsdev.learnersguild.org/goals/"+goal.number)= goal.title
+          td
+            = goal.playerIds.length
