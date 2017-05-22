@@ -8,6 +8,7 @@ webServer.set('view engine', 'pug')
 webServer.use(express.static(__dirname+'/public'))
 
 webServer.use((request, response, next) => {
+  response.locals.util = require('util')
   response.locals.moment = require('moment')
   next()
 })
