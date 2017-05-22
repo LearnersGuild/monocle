@@ -147,11 +147,11 @@ game.goalUsage = () =>
   ])
     .then(([players, goals]) => {
 
-      // remove pre-september cohort players
-      players = players.filter(player =>
-        // moment(player.createdAt).isAfter('2016-09-01')
-        moment(player.createdAt).isAfter(moment().subtract(21, 'weeks'))
-      )
+      // // remove pre-september cohort players
+      // players = players.filter(player =>
+      //   // moment(player.createdAt).isAfter('2016-09-01')
+      //   moment(player.createdAt).isAfter(moment().subtract(21, 'weeks'))
+      // )
 
       const playerIds = players.map(player => player.id)
 
